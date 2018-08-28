@@ -1,3 +1,7 @@
+extern crate rust_pigpio;
+
 fn main() {
-    println!("Hello, world!");
+
+    rust_pigpio::initialize();
+
 }

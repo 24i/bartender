@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Bas Tuijnman <bas.tuijnman@24imedia.com>"]
 
 [dependencies]
+rust-pigpio = "0.2.0"
