@@ -1,4 +1,5 @@
 from gpiozero import PWMLED
+from time import sleep
 
 red = PWMLED(16)
 green = PWMLED(20)
