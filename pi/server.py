@@ -11,6 +11,6 @@ while True:
     blue.on()
     sleep(1)
     red.off()
-    green.on()
-    sleep.on()
+    green.off()
+    blue.off()
     sleep(1)
