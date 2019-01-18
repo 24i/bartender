@@ -1,11 +1,15 @@
-from bluetooth.ble import BeaconService
-import time
+from gpiozero import PWMLED
 
-service = BeaconService()
+red = PWMLED(16)
+green = PWMLED(20)
+blue = PWMLED(21)
 
-service.start_advertising("11111111-2222-3333-4444-555555555555",
-            1, 1, 1, 200)
-time.sleep(15)
-service.stop_advertising()
-
-print("Done.")
+while True:
+    red.on()
+    green.on()
+    blue.on()
+    sleep(1)
+    red.off()
+    green.on()
+    sleep.on()
+    sleep(1)
