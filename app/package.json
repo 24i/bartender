@@ -1,8 +1,9 @@
 {
-  "name": "Bartender",
+  "name": "bartender",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@expo/vector-icons": "^9.0.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "jest": "^23.5.0",
     "jest-react-native": "^18.0.0",
@@ -18,7 +19,12 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "prop-types": "^15.6.2",
     "react": "16.3.1",
-    "react-native": "~0.55.2"
+    "react-native": "~0.55.2",
+    "react-native-button-component": "^0.2.28",
+    "react-native-circle-button": "^1.0.9",
+    "react-native-ionicons": "^4.5.5",
+    "react-native-snap-carousel": "^3.7.5"
   }
 }
