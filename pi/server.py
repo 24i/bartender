@@ -79,6 +79,31 @@ class handler(BaseHTTPRequestHandler):
 			self.end_headers()
 			self.wfile.write('{"message": "Recipe created"}')
 
+			return
+
+		if self.path == '/pour':
+			content_len = int(self.headers.getheader('content-length', 0))
+			body = json.loads(self.rfile.read(content_len))
+
+			cursor.execute('SELECT drink FROM PUMPS')
+			drinks = cursor.fetchall()
+			drinkslist = []
+			for drink in drinks:
+				drinkslist.append(drink[0])
+
+			for part in body['parts']:
+				if part['drink'] not in drinkslist:
+					self.send_response(400)
+					self.send_header('Content-type','application/json')
+					self.end_headers()
+					self.wfile.write('{"message": "Non compatible drink"}')
+					return
+
+			self.send_response(200)
+			self.send_header('Content-type','application/json')
+			self.end_headers()
+			self.wfile.write('{"message": "Recipe created"}')
+
 
 	def do_PUT(self):
 		if self.path == '/pumps':
