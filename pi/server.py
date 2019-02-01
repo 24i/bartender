@@ -1,23 +1,48 @@
-from gpiozero import PWMLED
-from time import sleep
-from socket import *
-import http.server
+# from gpiozero import PWMLED
+from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+import sqlite3
+import json
 
-red = PWMLED(16)
-green = PWMLED(20)
-blue = PWMLED(21)
+db = sqlite3.connect('drinks.db')
 
-cs = socket(AF_INET, SOCK_DGRAM)
-cs.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-cs.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+# red = PWMLED(16)
+# green = PWMLED(20)
+# blue = PWMLED(21)
 
-with socketserver.TCPServer(("", 8000), Handler) as httpd:
-    print("serving at port", 8000)
-    httpd.serve_forever()
+PORT_NUMBER = 8080
 
-while True:
+#This class will handles any incoming request from
+#the browser
+class handler(BaseHTTPRequestHandler):
 
-    print("UDP signal")
-    cs.sendto('bartender_broadcast', ('255.255.255.255', 54545))
+	#Handler for the GET requests
+	def do_GET(self):
 
-    sleep(2)
+		if self.path == '/pumps':
+			self.send_response(200)
+			self.send_header('Content-type','text/html')
+			self.end_headers()
+			# Send the html message
+			self.wfile.write('LIST OF DRINKS IN JSON')
+
+		return
+
+	def do_POST(self):
+
+		if self.path == '/pumps':
+
+
+		return
+
+try:
+	#Create a web server and define the handler to manage the
+	#incoming request
+	server = HTTPServer(('', PORT_NUMBER), handler)
+	print 'Started httpserver on port ' , PORT_NUMBER
+
+	#Wait forever for incoming htto requests
+	server.serve_forever()
+
+except KeyboardInterrupt:
+	print '^C received, shutting down the web server'
+	server.socket.close()
