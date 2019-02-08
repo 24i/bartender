@@ -102,7 +102,7 @@ class handler(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
-			self.wfile.write('{"message": "Recipe created"}')
+			self.wfile.write('{"message": "Drink pour started"}')
 
 
 	def do_PUT(self):
