@@ -1,4 +1,4 @@
-# from gpiozero import PWMLED
+from gpiozero import LED
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import sqlite3
 import json
@@ -19,6 +19,8 @@ cursor.executemany('INSERT OR IGNORE INTO pumps(id,drink) VALUES(?,?)', pumps)
 # green = PWMLED(20)
 # blue = PWMLED(21)
 
+pump1 = LED(17)
+
 PORT_NUMBER = 8080
 
 #This class will handles any incoming request from
@@ -27,6 +29,22 @@ class handler(BaseHTTPRequestHandler):
 
 	#Handler for the GET requests
 	def do_GET(self):
+
+		if self.path == '/start':
+			self.send_response(200)
+			self.send_header('Content-type','application/json')
+			self.end_headers()
+			pump1.on()
+			self.wfile.write('{"message":"start"}')
+			return
+
+		if self.path == '/end':
+			self.send_response(200)
+			self.send_header('Content-type','application/json')
+			self.end_headers()
+			pump1.off()
+			self.wfile.write('{"message":"start"}')
+			return
 
 		if self.path == '/pumps':
 			self.send_response(200)
