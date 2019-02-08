@@ -20,6 +20,11 @@ cursor.executemany('INSERT OR IGNORE INTO pumps(id,drink) VALUES(?,?)', pumps)
 # blue = PWMLED(21)
 
 pump1 = LED(17)
+pump2 = LED(27)
+pump3 = LED(22)
+pump4 = LED(23)
+pump5 = LED(24)
+pump6 = LED(25)
 
 PORT_NUMBER = 8080
 
@@ -35,6 +40,11 @@ class handler(BaseHTTPRequestHandler):
 			self.send_header('Content-type','application/json')
 			self.end_headers()
 			pump1.on()
+			pump2.on()
+			pump3.on()
+			pump4.on()
+			pump5.on()
+			pump6.on()
 			self.wfile.write('{"message":"start"}')
 			return
 
@@ -43,6 +53,11 @@ class handler(BaseHTTPRequestHandler):
 			self.send_header('Content-type','application/json')
 			self.end_headers()
 			pump1.off()
+			pump2.off()
+			pump3.off()
+			pump4.off()
+			pump5.off()
+			pump6.off()
 			self.wfile.write('{"message":"start"}')
 			return
 
@@ -154,5 +169,11 @@ try:
 
 except KeyboardInterrupt:
 	print '^C received, shutting down the web server'
+	pump1.off()
+	pump2.off()
+	pump3.off()
+	pump4.off()
+	pump5.off()
+	pump6.off()
 	cursor.close()
 	server.socket.close()
