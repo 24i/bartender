@@ -26,6 +26,13 @@ pump4 = LED(23)
 pump5 = LED(24)
 pump6 = LED(25)
 
+pump1.off()
+pump2.off()
+pump3.off()
+pump4.off()
+pump5.off()
+pump6.off()
+
 PORT_NUMBER = 8080
 
 #This class will handles any incoming request from
