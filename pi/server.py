@@ -98,6 +98,7 @@ class handler(BaseHTTPRequestHandler):
 			cursor.execute('INSERT INTO recipes(name) VALUES(?)', (body['name'],))
 			for part in body['parts']:
 				cursor.execute('INSERT INTO recipes_drinks(recipe_id, drink, percentage) VALUES(?, ?, ?)', (cursor.lastrowid, part['drink'].lower(), part['percentage']))
+			db.commit()
 
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
@@ -161,6 +162,8 @@ class handler(BaseHTTPRequestHandler):
 				return
 
 			cursor.execute('UPDATE pumps SET drink=? WHERE id=?', (body['drink'].lower(), body['id']))
+			db.commit()
+			
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
