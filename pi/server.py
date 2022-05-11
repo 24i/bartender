@@ -1,5 +1,5 @@
 from gpiozero import LED
-from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from http.server import BaseHTTPRequestHandler,HTTPServer
 import sqlite3
 import json
 import collections
@@ -169,13 +169,13 @@ try:
 	#Create a web server and define the handler to manage the
 	#incoming request
 	server = HTTPServer(('', PORT_NUMBER), handler)
-	print 'Started httpserver on port ' , PORT_NUMBER
+	print('Started httpserver on port ' , PORT_NUMBER)
 
 	#Wait forever for incoming htto requests
 	server.serve_forever()
 
 except KeyboardInterrupt:
-	print '^C received, shutting down the web server'
+	print('^C received, shutting down the web server')
 	pump1.off()
 	pump2.off()
 	pump3.off()
