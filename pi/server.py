@@ -3,7 +3,8 @@ from http.server import BaseHTTPRequestHandler,HTTPServer
 import sqlite3
 import json
 import collections
-import sys, getopt
+import sys
+from threading import Timer
 
 from gpiozero.pins.mock import MockFactory
 args = sys.argv[1:]
@@ -91,7 +92,7 @@ class handler(BaseHTTPRequestHandler):
 	def do_POST(self):
 
 		if self.path == '/recipes':
-			content_len = int(self.headers.getheader('content-length', 0))
+			content_len = int(self.headers.get('content-length', 0))
 			body = json.loads(self.rfile.read(content_len))
 
 			cursor.execute('INSERT INTO recipes(name) VALUES(?)', (body['name'],))
@@ -106,7 +107,7 @@ class handler(BaseHTTPRequestHandler):
 			return
 
 		if self.path == '/pour':
-			content_len = int(self.headers.getheader('content-length', 0))
+			content_len = int(self.headers.get('content-length', 0))
 			body = json.loads(self.rfile.read(content_len))
 
 			cursor.execute('SELECT drink FROM PUMPS')
@@ -126,12 +127,17 @@ class handler(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
+
+			# TODO: setup correct timing mechanism
+			# t = Timer(3.0, print, "WUT")
+			# t.start()
+
 			self.wfile.write(bytes('{"message": "Drink pour started"}', 'utf-8'))
 
 
 	def do_PUT(self):
 		if self.path == '/pumps':
-			content_len = int(self.headers.getheader('content-length', 0))
+			content_len = int(self.headers.get('content-length', 0))
 			body = json.loads(self.rfile.read(content_len))
 
 			if body['id'] > 6:
