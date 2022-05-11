@@ -1,8 +1,18 @@
-from gpiozero import LED
+from gpiozero import Device,LED
 from http.server import BaseHTTPRequestHandler,HTTPServer
 import sqlite3
 import json
 import collections
+import sys, getopt
+
+from gpiozero.pins.mock import MockFactory
+args = sys.argv[1:]
+
+try:
+	if (args[0] == 'local'):
+		Device.pin_factory = MockFactory()
+except:
+	print("Running in PI mode")
 
 db = sqlite3.connect('drinks.db')
 cursor = db.cursor()
@@ -42,32 +52,6 @@ class handler(BaseHTTPRequestHandler):
 	#Handler for the GET requests
 	def do_GET(self):
 
-		if self.path == '/start':
-			self.send_response(200)
-			self.send_header('Content-type','application/json')
-			self.end_headers()
-			pump1.on()
-			pump2.on()
-			pump3.on()
-			pump4.on()
-			pump5.on()
-			pump6.on()
-			self.wfile.write('{"message":"start"}')
-			return
-
-		if self.path == '/end':
-			self.send_response(200)
-			self.send_header('Content-type','application/json')
-			self.end_headers()
-			pump1.off()
-			pump2.off()
-			pump3.off()
-			pump4.off()
-			pump5.off()
-			pump6.off()
-			self.wfile.write('{"message":"start"}')
-			return
-
 		if self.path == '/pumps':
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
@@ -83,7 +67,7 @@ class handler(BaseHTTPRequestHandler):
 				d['drink'] = pump[1]
 				pumplist.append(d)
 
-			self.wfile.write(json.dumps(pumplist))
+			self.wfile.write(bytes(json.dumps(pumplist), 'utf-8'))
 			return
 
 		if self.path == '/recipes':
@@ -101,7 +85,7 @@ class handler(BaseHTTPRequestHandler):
 				r['name'] = recipe[1]
 				recipelist.append(r)
 
-			self.wfile.write(json.dumps(recipelist))
+			self.wfile.write(bytes(json.dumps(recipelist), 'utf-8'))
 			return
 
 	def do_POST(self):
@@ -117,7 +101,7 @@ class handler(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
-			self.wfile.write('{"message": "Recipe created"}')
+			self.wfile.write(bytes('{"message": "Recipe created"}', 'utf-8'))
 
 			return
 
@@ -136,13 +120,13 @@ class handler(BaseHTTPRequestHandler):
 					self.send_response(400)
 					self.send_header('Content-type','application/json')
 					self.end_headers()
-					self.wfile.write('{"message": "Non compatible drink"}')
+					self.wfile.write(bytes('{"message": "Non compatible drink"}', 'utf-8'))
 					return
 
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
-			self.wfile.write('{"message": "Drink pour started"}')
+			self.wfile.write(bytes('{"message": "Drink pour started"}', 'utf-8'))
 
 
 	def do_PUT(self):
@@ -154,33 +138,37 @@ class handler(BaseHTTPRequestHandler):
 				self.send_response(400)
 				self.send_header('Content-type','application/json')
 				self.end_headers()
-				self.wfile.write('{"message": "This pump cannot be set"}')
+				self.wfile.write(bytes('{"message": "This pump cannot be set"}', 'utf-8'))
 				return
 
 			cursor.execute('UPDATE pumps SET drink=? WHERE id=?', (body['drink'].lower(), body['id']))
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
-			self.wfile.write('{"message": "Pump updated"}')
+			self.wfile.write(bytes('{"message": "Pump updated"}', 'utf-8'))
 		return
 
 
-try:
-	#Create a web server and define the handler to manage the
-	#incoming request
-	server = HTTPServer(('', PORT_NUMBER), handler)
-	print('Started httpserver on port ' , PORT_NUMBER)
+def main(argv):
+	try:
+		#Create a web server and define the handler to manage the
+		#incoming request
+		server = HTTPServer(('', PORT_NUMBER), handler)
+		print('Started httpserver on port ' , PORT_NUMBER)
 
-	#Wait forever for incoming htto requests
-	server.serve_forever()
+		#Wait forever for incoming htto requests
+		server.serve_forever()
 
-except KeyboardInterrupt:
-	print('^C received, shutting down the web server')
-	pump1.off()
-	pump2.off()
-	pump3.off()
-	pump4.off()
-	pump5.off()
-	pump6.off()
-	cursor.close()
-	server.socket.close()
+	except KeyboardInterrupt:
+		print('^C received, shutting down the web server')
+		pump1.off()
+		pump2.off()
+		pump3.off()
+		pump4.off()
+		pump5.off()
+		pump6.off()
+		cursor.close()
+		server.socket.close()
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
