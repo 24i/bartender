@@ -143,7 +143,9 @@ class handler(BaseHTTPRequestHandler):
 
 			# foreach Timer start -> pump.off ( ML * BASE_TIME / PERCENTAGE )
 			for pump in pumps:
-				timer = Timer(1.0, globals()['pump' + str(pump['number'])].off);
+
+				# TODO: calculate time the pumps need to be on
+				timer = Timer(1.0, turn_off, ['pump' + str(pump['number'])])
 				timer.start();
 
 			self.wfile.write(bytes('{"message": "Drink pour started"}', 'utf-8'))
@@ -163,13 +165,15 @@ class handler(BaseHTTPRequestHandler):
 
 			cursor.execute('UPDATE pumps SET drink=? WHERE id=?', (body['drink'].lower(), body['id']))
 			db.commit()
-			
+
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
 			self.wfile.write(bytes('{"message": "Pump updated"}', 'utf-8'))
 		return
 
+def turn_off(pump):
+	globals()[pump].off()
 
 def main(argv):
 	try:
