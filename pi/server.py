@@ -110,12 +110,13 @@ class handler(BaseHTTPRequestHandler):
 			content_len = int(self.headers.get('content-length', 0))
 			body = json.loads(self.rfile.read(content_len))
 
-			cursor.execute('SELECT drink FROM PUMPS')
+			cursor.execute('SELECT drink FROM PUMPS ORDER BY id ASC')
 			drinks = cursor.fetchall()
 			drinkslist = []
 			for drink in drinks:
 				drinkslist.append(drink[0])
 
+			pumps = []
 			for part in body['parts']:
 				if part['drink'] not in drinkslist:
 					self.send_response(400)
@@ -123,14 +124,26 @@ class handler(BaseHTTPRequestHandler):
 					self.end_headers()
 					self.wfile.write(bytes('{"message": "Non compatible drink"}', 'utf-8'))
 					return
+				else:
+					# Yes this is really really shitty, but it works and I can't be arsed
+					# to do it properly
+					pumps.append({
+						'number': drinkslist.index(part['drink']) + 1,
+						'percentage': part['percentage']
+					})
 
 			self.send_response(200)
 			self.send_header('Content-type','application/json')
 			self.end_headers()
 
-			# TODO: setup correct timing mechanism
-			# t = Timer(3.0, print, "WUT")
-			# t.start()
+			# Turn on each pump that we have in our given recipe
+			for pump in pumps:
+				globals()['pump' + str(pump['number'])].on()
+
+			# foreach Timer start -> pump.off ( ML * BASE_TIME / PERCENTAGE )
+			for pump in pumps:
+				timer = Timer(1.0, globals()['pump' + str(pump['number'])].off);
+				timer.start();
 
 			self.wfile.write(bytes('{"message": "Drink pour started"}', 'utf-8'))
 
