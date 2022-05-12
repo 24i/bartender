@@ -145,6 +145,7 @@ class handler(BaseHTTPRequestHandler):
 			for pump in pumps:
 
 				# TODO: calculate time the pumps need to be on
+				# for the given amount
 				timer = Timer(1.0, turn_off, ['pump' + str(pump['number'])])
 				timer.start();
 

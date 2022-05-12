@@ -113,6 +113,7 @@ Starts pouring a given drink
 *Request body example*
 ```json
 {
+    "amount": 330,
     "parts": [
         {
             "drink": "gin",
