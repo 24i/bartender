@@ -50,12 +50,16 @@ PORT_NUMBER = 8080
 #the browser
 class handler(BaseHTTPRequestHandler):
 
+	def default_headers(self):
+		self.send_header('Content-type','application/json')
+		self.send_header('Access-Control-Allow-Origin', '*')
+
 	#Handler for the GET requests
 	def do_GET(self):
 
 		if self.path == '/pumps':
 			self.send_response(200)
-			self.send_header('Content-type','application/json')
+			self.default_headers()
 			self.end_headers()
 
 			cursor.execute('SELECT * FROM pumps')
@@ -73,7 +77,7 @@ class handler(BaseHTTPRequestHandler):
 
 		if self.path == '/recipes':
 			self.send_response(200)
-			self.send_header('Content-type','application/json')
+			self.default_headers()
 			self.end_headers()
 
 			cursor.execute('SELECT * FROM recipes')
@@ -101,7 +105,7 @@ class handler(BaseHTTPRequestHandler):
 			db.commit()
 
 			self.send_response(200)
-			self.send_header('Content-type','application/json')
+			self.default_headers()
 			self.end_headers()
 			self.wfile.write(bytes('{"message": "Recipe created"}', 'utf-8'))
 
@@ -121,7 +125,7 @@ class handler(BaseHTTPRequestHandler):
 			for part in body['parts']:
 				if part['drink'] not in drinkslist:
 					self.send_response(400)
-					self.send_header('Content-type','application/json')
+					self.default_headers()
 					self.end_headers()
 					self.wfile.write(bytes('{"message": "Non compatible drink"}', 'utf-8'))
 					return
@@ -134,7 +138,7 @@ class handler(BaseHTTPRequestHandler):
 					})
 
 			self.send_response(200)
-			self.send_header('Content-type','application/json')
+			self.default_headers()
 			self.end_headers()
 
 			# Turn on each pump that we have in our given recipe
@@ -159,7 +163,7 @@ class handler(BaseHTTPRequestHandler):
 
 			if body['id'] > 6:
 				self.send_response(400)
-				self.send_header('Content-type','application/json')
+				self.default_headers()
 				self.end_headers()
 				self.wfile.write(bytes('{"message": "This pump cannot be set"}', 'utf-8'))
 				return
@@ -168,7 +172,7 @@ class handler(BaseHTTPRequestHandler):
 			db.commit()
 
 			self.send_response(200)
-			self.send_header('Content-type','application/json')
+			self.default_headers()
 			self.end_headers()
 			self.wfile.write(bytes('{"message": "Pump updated"}', 'utf-8'))
 		return
