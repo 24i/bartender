@@ -46,6 +46,9 @@ pump6.off()
 
 PORT_NUMBER = 8080
 
+BASELINE_TIMING_AMOUNT = 100 # Baseline amount of ML
+BASELINE_TIMING_TIME = 5 # Baseline seconds for amount
+
 #This class will handles any incoming request from
 #the browser
 class handler(BaseHTTPRequestHandler):
@@ -153,12 +156,9 @@ class handler(BaseHTTPRequestHandler):
 			for pump in pumps:
 				globals()['pump' + str(pump['number'])].on()
 
-			# foreach Timer start -> pump.off ( ML * BASE_TIME / PERCENTAGE )
 			for pump in pumps:
-
-				# TODO: calculate time the pumps need to be on
-				# for the given amount
-				timer = Timer(1.0, turn_off, ['pump' + str(pump['number'])])
+				time_for_pump = (((body['amount'] / 100) * pump['percentage']) / BASELINE_TIMING_AMOUNT) * BASELINE_TIMING_TIME
+				timer = Timer(time_for_pump, turn_off, ['pump' + str(pump['number'])])
 				timer.start();
 
 			self.wfile.write(bytes('{"message": "Drink pour started"}', 'utf-8'))
