@@ -157,7 +157,7 @@ class handler(BaseHTTPRequestHandler):
 				globals()['pump' + str(pump['number'])].on()
 
 			for pump in pumps:
-				time_for_pump = (((body['amount'] / 100) * pump['percentage']) / BASELINE_TIMING_AMOUNT) * BASELINE_TIMING_TIME
+				time_for_pump = ( ( ( body['amount'] / 100 ) * pump['percentage'] ) / BASELINE_TIMING_AMOUNT ) * BASELINE_TIMING_TIME
 				timer = Timer(time_for_pump, turn_off, ['pump' + str(pump['number'])])
 				timer.start();
 
