@@ -22,7 +22,7 @@ const PumpList = () => {
     return (
         <>
             <div className='container mb-10'>
-                <div className='lg:columns-3 md:columns-2 sm:columns-1 sm:items-center gap-8'>
+                <div className='lg:columns-3 md:columns-2 sm:columns-1'>
                     {pumps.map(pump => <Pump key={pump.id} value={pump} />)}
                 </div>
             </div>
