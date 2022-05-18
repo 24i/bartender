@@ -48,7 +48,7 @@ const Pump = ({ value }) => {
     }, [selectedDrink]);
 
     return (
-        <div className="max-w-sm rounded-lg border shadow-md bg-gray-800 border-gray-700">
+        <div className="max-w-sm rounded-lg border shadow-md bg-gray-800 border-gray-700 mb-8">
             <div className="flex flex-col items-center pb-10 pt-10">
                 <div className="mb-3 w-24 h-24 rounded-full shadow-lg flex justify-center items-center">
                     {findIconOrDefault(selectedDrink)}

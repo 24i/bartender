@@ -22,13 +22,8 @@ const PumpList = () => {
     return (
         <>
             <div className='container mb-10'>
-                <div className='columns-3'>
-                    {pumps.slice(0, 3).map(pump => <Pump key={pump.id} value={pump} />)}
-                </div>
-            </div>
-            <div className='container'>
-                <div className='columns-3'>
-                {pumps.slice(3).map(pump => <Pump key={pump.id} value={pump} />)}
+                <div className='lg:columns-3 md:columns-2 sm:columns-1 sm:items-center gap-8'>
+                    {pumps.map(pump => <Pump key={pump.id} value={pump} />)}
                 </div>
             </div>
         </>
