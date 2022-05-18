@@ -16,11 +16,24 @@ const Pump = ({ value }) => {
     const [ selectedDrink, setSelectedDrink ] = useState(value.drink);
 
     const onChangeDrink = (e) => {
-        console.log(e.target.value)
-        setSelectedDrink(e.target.value);
+        const drink = e.target.value;
+
+        // Update through API
+        fetch('http://localhost:8080/pumps', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: value.id,
+                drink
+            })
+        });
+
+        // Set internal state
+        setSelectedDrink(drink);
     }
 
-    console.log(selectedDrink);
     return (
         <div className="max-w-sm rounded-lg border shadow-md bg-gray-800 border-gray-700">
             <div className="flex flex-col items-center pb-10 pt-10">
