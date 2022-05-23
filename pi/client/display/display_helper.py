@@ -1,20 +1,17 @@
 from PIL import Image,ImageDraw,ImageFont
 
-class ScreenBuilder:
+class DisplayHelper:
 
     def __init__(self):
         self.width = 240
         self.height = 320
 
-    def build_home_screen(self):
-        # Create blank image for drawing.
-        screen = Image.new("RGB", (self.height, self.width ), "BLACK")
-        draw = ImageDraw.Draw(screen)
+    def draw_header(self, draw, text):
 
-        # image = Image.open('../pic/LCD_2inch.jpg')	
-        # image = image.rotate(180)
-        # disp.ShowImage(image)
-        Font1 = ImageFont.truetype("./fonts/Inter-Regular.ttf", 25)
-        draw.text((20, 68), 'ENJOY OUR DRINKS', fill = "WHITE",font=Font1)
+        textFont = ImageFont.truetype("./fonts/Inter-Regular.ttf", 24)
+        draw.text((15, 15), text, fill = "WHITE",font=textFont)
 
-        return screen
+    def draw_footer(self, draw, text):
+
+        textFont = ImageFont.truetype("./fonts/Inter-Regular.ttf", 22)
+        draw.text((15, 200), text, fill = "WHITE",font=textFont)
