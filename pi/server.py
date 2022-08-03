@@ -106,6 +106,11 @@ class handler(BaseHTTPRequestHandler):
 
 	def do_POST(self):
 
+		if self.path == '/test_pump':
+			content_len = int(self.headers.get('content-length', 0))
+			body = json.loads(self.rfile.read(content_len))
+			globals()['pump' + str(body['pump'])].on()
+
 		if self.path == '/recipes':
 			content_len = int(self.headers.get('content-length', 0))
 			body = json.loads(self.rfile.read(content_len))
