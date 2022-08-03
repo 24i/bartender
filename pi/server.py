@@ -35,7 +35,7 @@ pump2 = LED(16)
 pump3 = LED(22)
 pump4 = LED(23)
 pump5 = LED(24)
-pump6 = LED(27)
+pump6 = LED(26)
 
 pump1.off()
 pump2.off()
