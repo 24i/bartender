@@ -1,4 +1,4 @@
-from gpiozero import Device,LED
+from gpiozero import Device,OutputDevice
 from http.server import BaseHTTPRequestHandler,HTTPServer
 import sqlite3
 import json
@@ -30,12 +30,12 @@ cursor.executemany('INSERT OR IGNORE INTO pumps(id,drink) VALUES(?,?)', pumps)
 # green = PWMLED(20)
 # blue = PWMLED(21)
 
-pump1 = LED(17)
-pump2 = LED(16)
-pump3 = LED(22)
-pump4 = LED(23)
-pump5 = LED(24)
-pump6 = LED(26)
+pump1 = OutputDevice(17)
+pump2 = OutputDevice(16)
+pump3 = OutputDevice(22)
+pump4 = OutputDevice(23)
+pump5 = OutputDevice(24)
+pump6 = OutputDevice(26)
 
 pump1.off()
 pump2.off()
