@@ -31,11 +31,11 @@ cursor.executemany('INSERT OR IGNORE INTO pumps(id,drink) VALUES(?,?)', pumps)
 # blue = PWMLED(21)
 
 pump1 = LED(17)
-pump2 = LED(27)
+pump2 = LED(16)
 pump3 = LED(22)
 pump4 = LED(23)
 pump5 = LED(24)
-pump6 = LED(25)
+pump6 = LED(27)
 
 pump1.off()
 pump2.off()
