@@ -17,7 +17,7 @@ class AmountSelectorScreen(Frame):
         self.amount = Label(self, text=str(self.steps[self.activeStep]) + "ml", style="Bartender.TLabel")
         self.amount.grid(column=0, row=1, pady=25)
 
-    def enter(self):
+    def enter(self, params):
         self.keyPressEventId = self.app.bind("<KeyPress>", self.handleKeyPress)
     
     def leave(self):

@@ -26,14 +26,14 @@ class App(Frame):
         
         self.navigate(MainScreen)
 
-    def navigate(self, screen):
+    def navigate(self, screen, params={}):
         for s in self.screens:
             self.screens[s].grid_forget()
             self.screens[s].leave()
         
         screen = self.screens[screen]
         screen.grid(row=0, column=0)
-        screen.enter()
+        screen.enter(params)
 
 window = Tk()
 window.geometry("320x240")

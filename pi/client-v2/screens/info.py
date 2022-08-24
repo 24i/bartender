@@ -28,7 +28,7 @@ class InfoScreen(Frame):
         pump6 = Label(self, text="Pump 6", style="Bartender.TLabel")
         pump6.grid(column=1, row=2, padx=30, pady=20)
     
-    def enter(self):
+    def enter(self, params):
         self.keyPressEventId = self.app.bind("<KeyPress>", self.handleKeyPress)
     
     def leave(self):

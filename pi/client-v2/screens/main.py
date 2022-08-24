@@ -44,7 +44,7 @@ class MainScreen(Frame):
         self.columnconfigure(3, weight=1)
         self.rowconfigure(0, weight=1)
 
-    def enter(self):
+    def enter(self, params):
         self.keyPressEventId = self.app.bind("<KeyPress>", self.handleKeyPress)
     
     def leave(self):

@@ -28,7 +28,7 @@ class RecipeSelectorScreen(Frame):
         self.columnconfigure(1, weight=1)
         self.columnconfigure(2, weight=1)
 
-    def enter(self):
+    def enter(self, params):
         self.keyPressEventId = self.app.bind("<KeyPress>", self.handleKeyPress)
     
     def leave(self):
