@@ -1,3 +1,4 @@
 drinks.db
 drinks.db-journal
 __pycache__
+.DS_Store

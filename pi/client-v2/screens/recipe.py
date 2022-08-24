@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 from screens.amount import AmountSelectorScreen
+import requests
 
 class RecipeSelectorScreen(Frame):
 
@@ -12,12 +13,12 @@ class RecipeSelectorScreen(Frame):
 
         self.app = app
 
-        self.recipes = ["Long Island Ice Tea", "Gin & Tonic", "Vodka & Orange Juice"]
+        self.recipes = requests.get('http://127.0.0.1:8080/recipes').json()
 
         self.left = Label(self, text="", style="Bartender.TLabel")
         self.left.grid(column=0, row=0)
 
-        self.label = Label(self, text=self.recipes[self.selectedRecipe], style="Bartender.TLabel",)
+        self.label = Label(self, text=self.recipes[self.selectedRecipe]['name'], style="Bartender.TLabel",)
         self.label.grid(column=1, row=0, padx=10)
 
         self.right = Label(self, text=">>", style="Bartender.TLabel")
@@ -56,4 +57,4 @@ class RecipeSelectorScreen(Frame):
         if (e.keysym == "Return"):
             self.master.navigate(AmountSelectorScreen)
 
-        self.label.configure(text=self.recipes[self.selectedRecipe])
+        self.label.configure(text=self.recipes[self.selectedRecipe]['name'])
