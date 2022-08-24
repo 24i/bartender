@@ -55,6 +55,8 @@ class RecipeSelectorScreen(Frame):
             self.right.configure(text=">>")
 
         if (e.keysym == "Return"):
-            self.master.navigate(AmountSelectorScreen)
+            self.master.navigate(AmountSelectorScreen, {
+                "recipeId": self.recipes[self.selectedRecipe]['id']
+            })
 
         self.label.configure(text=self.recipes[self.selectedRecipe]['name'])

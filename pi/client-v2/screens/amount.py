@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
+from screens.pour import PourScreen
 
 class AmountSelectorScreen(Frame):
 
@@ -18,6 +19,7 @@ class AmountSelectorScreen(Frame):
         self.amount.grid(column=0, row=1, pady=25)
 
     def enter(self, params):
+        self.recipeId = params['recipeId']
         self.keyPressEventId = self.app.bind("<KeyPress>", self.handleKeyPress)
     
     def leave(self):
@@ -37,3 +39,9 @@ class AmountSelectorScreen(Frame):
     
         self.amountBar.configure(text="|" + ("██" * n) + ("__" * (max-n)) + "|" )
         self.amount.configure(text=str(self.steps[self.activeStep]) + "ml")
+
+        if (e.keysym == "Return"):
+            self.master.navigate(PourScreen, {
+                "recipeId": self.recipeId,
+                "amount": self.steps[self.activeStep]
+            })

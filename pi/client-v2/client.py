@@ -7,6 +7,7 @@ from screens.main import MainScreen
 from screens.info import InfoScreen
 from screens.recipe import RecipeSelectorScreen
 from screens.amount import AmountSelectorScreen
+from screens.pour import PourScreen
 
 class App(Frame):
 
@@ -20,7 +21,7 @@ class App(Frame):
         self.rowconfigure(0, weight=1)
 
         self.screens = {}
-        for Screen in (MainScreen, InfoScreen, RecipeSelectorScreen, AmountSelectorScreen):
+        for Screen in (MainScreen, InfoScreen, RecipeSelectorScreen, AmountSelectorScreen, PourScreen):
             screen = Screen(self, root)
             self.screens[Screen] = screen
         
