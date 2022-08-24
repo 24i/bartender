@@ -127,6 +127,50 @@ class handler(BaseHTTPRequestHandler):
 
 			return
 
+		if self.path == '/pour-recipe':
+			content_len = int(self.headers.get('content-length', 0))
+			body = json.loads(self.rfile.read(content_len))
+
+			cursor.execute('SELECT drink FROM PUMPS ORDER BY id ASC')
+			drinks = cursor.fetchall()
+			drinkslist = []
+			for drink in drinks:
+				drinkslist.append(drink[0])
+
+			cursor.execute('SELECT drink,percentage from recipes_drinks WHERE recipe_id=?', str(body['recipeId']))
+			parts = cursor.fetchall()
+
+			pumps = []
+			for part in parts:
+				if part[0] not in drinkslist:
+					self.send_response(400)
+					self.default_headers()
+					self.end_headers()
+					self.wfile.write(bytes('{"message": "Non compatible drink"}', 'utf-8'))
+					return
+				else:
+					# Yes this is really really shitty, but it works and I can't be arsed
+					# to do it properly
+					pumps.append({
+						'number': drinkslist.index(part[0]) + 1,
+						'percentage': part[1]
+					})
+
+			self.send_response(200)
+			self.default_headers()
+			self.end_headers()
+
+			# Turn on each pump that we have in our given recipe
+			for pump in pumps:
+				globals()['pump' + str(pump['number'])].on()
+
+			for pump in pumps:
+				time_for_pump = ( ( ( body['amount'] / 100 ) * pump['percentage'] ) / BASELINE_TIMING_AMOUNT ) * BASELINE_TIMING_TIME
+				timer = Timer(time_for_pump, turn_off, ['pump' + str(pump['number'])])
+				timer.start();
+
+			self.wfile.write(bytes('{"message": "Drink pour started", "time": ' + str(time_for_pump) + '}', 'utf-8'))
+		
 		if self.path == '/pour':
 			content_len = int(self.headers.get('content-length', 0))
 			body = json.loads(self.rfile.read(content_len))
