@@ -28,16 +28,15 @@ class AmountSelectorScreen(Frame):
             self.keyPressEventId = False
     
     def handleKeyPress(self, e):
-        max = len(self.steps)
-        print(e.keysym)
+        maxSteps = len(self.steps)
         if (e.keysym == "Left" and self.activeStep > 0):
             self.activeStep -= 1
-        if (e.keysym == "Right" and self.activeStep < max - 1):
+        if (e.keysym == "Right" and self.activeStep < maxSteps - 1):
             self.activeStep +=1
         
         n = self.activeStep + 1
     
-        self.amountBar.configure(text="|" + ("██" * n) + ("__" * (max-n)) + "|" )
+        self.amountBar.configure(text="|" + ("██" * n) + ("__" * (maxSteps-n)) + "|" )
         self.amount.configure(text=str(self.steps[self.activeStep]) + "ml")
 
         if (e.keysym == "Return"):
