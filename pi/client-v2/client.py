@@ -8,6 +8,7 @@ from screens.info import InfoScreen
 from screens.recipe import RecipeSelectorScreen
 from screens.amount import AmountSelectorScreen
 from screens.pour import PourScreen
+from gpiozero import RotaryEncoder,Button
 
 class App(Frame):
 
@@ -48,6 +49,22 @@ style.configure("TLabel", background="black", foreground="white")
 
 window.columnconfigure(0, weight=1)
 window.rowconfigure(0, weight=1)
+
+rotor = RotaryEncoder(5, 3)
+button = Button(19)
+
+def sendReturn():
+    window.event_generate("<KeyPress>", keysym="Return")
+
+def sendRight():
+    window.event_generate("<KeyPress>", keysym="Right")
+
+def sendLeft():
+    window.event_generate("<KeyPress>", keysym="Left")
+
+rotor.when_rotated_clockwise = sendRight
+rotor.when_rotated_counter_clockwise = sendLeft
+button.when_pressed = sendReturn
 
 app = App(window)
 window.mainloop()
