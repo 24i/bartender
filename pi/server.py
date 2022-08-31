@@ -37,12 +37,12 @@ pump4 = OutputDevice(23)
 pump5 = OutputDevice(24)
 pump6 = OutputDevice(26)
 
-pump1.off()
-pump2.off()
-pump3.off()
-pump4.off()
-pump5.off()
-pump6.off()
+# pump1.off()
+# pump2.off()
+# pump3.off()
+# pump4.off()
+# pump5.off()
+# pump6.off()
 
 PORT_NUMBER = 8080
 
