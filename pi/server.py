@@ -26,6 +26,15 @@ cursor.execute('CREATE TABLE IF NOT EXISTS recipes_drinks (recipe_id INTEGER, dr
 pumps = [ (1, 'UNKNOWN'), (2, 'UNKNOWN'), (3, 'UNKNOWN'), (4, 'UNKNOWN'), (5, 'UNKNOWN'), (6, 'UNKNOWN') ]
 cursor.executemany('INSERT OR IGNORE INTO pumps(id,drink) VALUES(?,?)', pumps)
 
+scalefactors = {
+	1: 1,
+	2: 1,
+	3: 1,
+	4: 1.25,
+	5: 1,
+	6: 1
+}
+
 # red = PWMLED(16)
 # green = PWMLED(20)
 # blue = PWMLED(21)
@@ -167,8 +176,9 @@ class handler(BaseHTTPRequestHandler):
 			for pump in pumps:
 				globals()['pump' + str(pump['number'])].on()
 
+			scaleFactor = scalefactors[len(pumps)]
 			for pump in pumps:
-				time_for_pump = ( ( ( body['amount'] / 100 ) * pump['percentage'] ) / BASELINE_TIMING_AMOUNT ) * BASELINE_TIMING_TIME
+				time_for_pump = (( ( ( body['amount'] / 100 ) * pump['percentage'] ) / BASELINE_TIMING_AMOUNT ) * BASELINE_TIMING_TIME) * scaleFactor
 				timer = Timer(time_for_pump, turn_off, ['pump' + str(pump['number'])])
 				timer.start();
 
