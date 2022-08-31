@@ -47,7 +47,7 @@ pump6 = OutputDevice(26, active_high=False)
 PORT_NUMBER = 8080
 
 BASELINE_TIMING_AMOUNT = 100 # Baseline amount of ML
-BASELINE_TIMING_TIME = 5 # Baseline seconds for amount
+BASELINE_TIMING_TIME = 3.7 # Baseline seconds for amount
 
 #This class will handles any incoming request from
 #the browser
