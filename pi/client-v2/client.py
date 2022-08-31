@@ -38,7 +38,7 @@ class App(Frame):
 
 window = Tk()
 window.geometry("320x240")
-# window.attributes("-fullscreen", True)
+window.attributes("-fullscreen", True)
 
 style = Style()
 style.theme_use('default')
