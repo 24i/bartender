@@ -21,6 +21,10 @@ class MainScreen(Frame):
                 "normal": PhotoImage(file = os.path.join(path, "../icons/cocktail.png")),
                 "focus": PhotoImage(file = os.path.join(path, "../icons/cocktail_focus.png"))
             },
+            "clean": {
+                "normal": PhotoImage(file = os.path.join(path, "../icons/clean.png")),
+                "focus": PhotoImage(file = os.path.join(path, "../icons/clean_focus.png"))
+            },
             "info": {
                 "normal": PhotoImage(file=os.path.join(path, "../icons/info.png")),
                 "focus": PhotoImage(file=os.path.join(path, "../icons/info_focus.png"))
@@ -33,16 +37,13 @@ class MainScreen(Frame):
         }
 
         cocktailButton = Label(self, image=self.icons["cocktail"]["focus"], name="cocktail")
-        cocktailButton.grid(column=1, row=0, padx=25)
+        cocktailButton.grid(column=1, row=0, padx=20)
+        cleanButton = Label(self, image=self.icons["clean"]["normal"], name="clean")
+        cleanButton.grid(column=2, row=0, padx=20)
         infoButton = Label(self, image=self.icons["info"]["normal"], name="info")
-        infoButton.grid(column=2, row=0, padx=25)
+        infoButton.grid(column=3, row=0, padx=20)
 
-        self.buttons = [ cocktailButton, infoButton ]
-
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(3, weight=1)
-        self.rowconfigure(0, weight=1)
+        self.buttons = [ cocktailButton, cleanButton, infoButton ]
 
     def enter(self, params):
         self.keyPressEventId = self.app.bind("<KeyPress>", self.handleKeyPress)
