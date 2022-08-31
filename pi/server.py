@@ -118,8 +118,9 @@ class handler(BaseHTTPRequestHandler):
 			body = json.loads(self.rfile.read(content_len))
 
 			cursor.execute('INSERT INTO recipes(name) VALUES(?)', (body['name'],))
+			recipeId = cursor.lastrowid
 			for part in body['parts']:
-				cursor.execute('INSERT INTO recipes_drinks(recipe_id, drink, percentage) VALUES(?, ?, ?)', (cursor.lastrowid, part['drink'].lower(), part['percentage']))
+				cursor.execute('INSERT INTO recipes_drinks(recipe_id, drink, percentage) VALUES(?, ?, ?)', (recipeId, part['drink'].lower(), part['percentage']))
 			db.commit()
 
 			self.send_response(200)
