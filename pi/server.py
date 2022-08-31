@@ -111,7 +111,7 @@ class handler(BaseHTTPRequestHandler):
 			body = json.loads(self.rfile.read(content_len))
 			pump = globals()['pump' + body['pump']]
 			method = getattr(pump, body['method'])
-			method(pump)
+			method()
 
 		if self.path == '/recipes':
 			content_len = int(self.headers.get('content-length', 0))
