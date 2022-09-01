@@ -79,6 +79,11 @@ rotor.when_rotated_clockwise = sendRight
 rotor.when_rotated_counter_clockwise = sendLeft
 button.when_pressed = sendReturn
 
+#
+# Check whether the server is already up, shitty I know, but in the 
+# startup sequence it's not guaranteed that it's already up and this
+# is a better solution than an arbitrary wait in the boot sequence.
+#
 foundServer = False
 while foundServer != True:
     try:
