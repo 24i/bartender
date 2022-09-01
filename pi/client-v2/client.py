@@ -8,7 +8,20 @@ from screens.info import InfoScreen
 from screens.recipe import RecipeSelectorScreen
 from screens.amount import AmountSelectorScreen
 from screens.pour import PourScreen
-from gpiozero import RotaryEncoder,Button
+from gpiozero import RotaryEncoder,Button,Device
+import requests
+import time
+import sys
+
+# Mock GPIO in local mode
+from gpiozero.pins.mock import MockFactory
+args = sys.argv[1:]
+
+try:
+	if (args[0] == 'local'):
+		Device.pin_factory = MockFactory()
+except:
+	print("Running in PI mode")
 
 class App(Frame):
 
@@ -65,6 +78,15 @@ def sendLeft():
 rotor.when_rotated_clockwise = sendRight
 rotor.when_rotated_counter_clockwise = sendLeft
 button.when_pressed = sendReturn
+
+foundServer = False
+while foundServer != True:
+    try:
+        requests.get('http://127.0.0.1:8080/pumps') 
+        foundServer = True
+    except:
+        foundServer = False
+        time.sleep(1)
 
 app = App(window)
 window.mainloop()
