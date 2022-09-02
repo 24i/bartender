@@ -14,15 +14,18 @@ import requests
 import time
 import sys
 
-# Mock GPIO in local mode
-from gpiozero.pins.mock import MockFactory
+isLocalMode = False
 args = sys.argv[1:]
-
 try:
-	if (args[0] == 'local'):
-		Device.pin_factory = MockFactory()
+    if (args[0] == 'local'):
+        isLocalMode = True
 except:
-	print("Running in PI mode")
+	pass
+
+if (isLocalMode == True):
+    # Mock GPIO in local mode
+    from gpiozero.pins.mock import MockFactory
+    Device.pin_factory = MockFactory()
 
 class App(Frame):
 
@@ -53,7 +56,9 @@ class App(Frame):
 
 window = Tk()
 window.geometry("320x240")
-#window.attributes("-fullscreen", True)
+
+if (isLocalMode == False):
+    window.attributes("-fullscreen", True)
 
 style = Style()
 style.theme_use('default')
