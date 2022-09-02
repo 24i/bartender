@@ -46,13 +46,6 @@ pump4 = OutputDevice(23, active_high=False)
 pump5 = OutputDevice(24, active_high=False)
 pump6 = OutputDevice(26, active_high=False)
 
-# pump1.off()
-# pump2.off()
-# pump3.off()
-# pump4.off()
-# pump5.off()
-# pump6.off()
-
 PORT_NUMBER = 8080
 
 BASELINE_TIMING_AMOUNT = 100 # Baseline amount of ML
@@ -114,13 +107,19 @@ class handler(BaseHTTPRequestHandler):
 			return
 
 	def do_POST(self):
-
-		if self.path == '/test_pump':
+		
+		if self.path == '/clean':
 			content_len = int(self.headers.get('content-length', 0))
 			body = json.loads(self.rfile.read(content_len))
-			pump = globals()['pump' + body['pump']]
-			method = getattr(pump, body['method'])
-			method()
+			pumps = [pump1, pump2, pump3, pump4, pump5, pump6]
+			for pump in pumps:
+				method = getattr(pump, body['method'])
+				method()
+			
+			self.send_response(200)
+			self.default_headers()
+			self.end_headers()
+			self.wfile.write(bytes('{"message": "Cleaning mode: ' + body['method'] + '"}', 'utf-8'))
 
 		if self.path == '/recipes':
 			content_len = int(self.headers.get('content-length', 0))

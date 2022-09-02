@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 from screens.info import InfoScreen
 from screens.recipe import RecipeSelectorScreen
+from screens.clean import CleanScreen
 import os
 
 class MainScreen(Frame):
@@ -33,7 +34,8 @@ class MainScreen(Frame):
 
         self.callbacks = {
             "info": lambda: root.navigate(InfoScreen),
-            "cocktail": lambda: root.navigate(RecipeSelectorScreen)
+            "cocktail": lambda: root.navigate(RecipeSelectorScreen),
+            "clean": lambda: root.navigate(CleanScreen)
         }
 
         cocktailButton = Label(self, image=self.icons["cocktail"]["focus"], name="cocktail")

@@ -8,6 +8,7 @@ from screens.info import InfoScreen
 from screens.recipe import RecipeSelectorScreen
 from screens.amount import AmountSelectorScreen
 from screens.pour import PourScreen
+from screens.clean import CleanScreen
 from gpiozero import RotaryEncoder,Button,Device
 import requests
 import time
@@ -35,7 +36,7 @@ class App(Frame):
         self.rowconfigure(0, weight=1)
 
         self.screens = {}
-        for Screen in (MainScreen, InfoScreen, RecipeSelectorScreen, AmountSelectorScreen, PourScreen):
+        for Screen in (MainScreen, InfoScreen, RecipeSelectorScreen, AmountSelectorScreen, PourScreen, CleanScreen):
             screen = Screen(self, root)
             self.screens[Screen] = screen
         
@@ -52,7 +53,7 @@ class App(Frame):
 
 window = Tk()
 window.geometry("320x240")
-window.attributes("-fullscreen", True)
+#window.attributes("-fullscreen", True)
 
 style = Style()
 style.theme_use('default')
